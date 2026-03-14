@@ -1,5 +1,5 @@
-import React from 'react';
-import { X, Save, Info, Calculator, Package, DollarSign, Layers } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Save, Info, Calculator, Package, DollarSign, Layers, Image as ImageIcon, Upload } from 'lucide-react';
 import { Category } from '../types';
 import { cn } from '../lib/utils';
 
@@ -10,6 +10,8 @@ interface ProductFormProps {
 }
 
 export const ProductForm = ({ category, onClose, onSave }: ProductFormProps) => {
+  const [imageUrl, setImageUrl] = useState('');
+
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-zinc-900/40 backdrop-blur-sm">
       <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
@@ -32,6 +34,53 @@ export const ProductForm = ({ category, onClose, onSave }: ProductFormProps) => 
         {/* Form Body */}
         <div className="p-8 overflow-y-auto max-h-[70vh]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Image Upload */}
+            <div className="md:col-span-2 space-y-2">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Product Image</label>
+              <div className="flex gap-4">
+                <div className="w-32 h-32 bg-zinc-50 border-2 border-dashed border-zinc-200 rounded-2xl flex flex-col items-center justify-center text-zinc-400 overflow-hidden relative group">
+                  {imageUrl ? (
+                    <img src={imageUrl} alt="Preview" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                  ) : (
+                    <>
+                      <ImageIcon size={24} className="mb-2 opacity-50" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest">No Image</span>
+                    </>
+                  )}
+                  <button 
+                    type="button"
+                    className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white"
+                    onClick={() => setImageUrl(`https://picsum.photos/seed/${Math.random()}/400/400`)}
+                  >
+                    <Upload size={20} />
+                  </button>
+                </div>
+                <div className="flex-1 space-y-4">
+                  <div className="p-4 bg-zinc-50 rounded-xl border border-zinc-100">
+                    <p className="text-xs text-zinc-500 leading-relaxed mb-3">
+                      Upload a high-quality image of the product packaging or the cured finish.
+                    </p>
+                    <div className="flex gap-2">
+                      <input 
+                        type="text" 
+                        placeholder="Paste image URL..."
+                        value={imageUrl}
+                        onChange={(e) => setImageUrl(e.target.value)}
+                        className="flex-1 px-3 py-1.5 text-xs bg-white border border-zinc-200 rounded-lg focus:ring-2 focus:ring-zinc-900 outline-none transition-all"
+                      />
+                      <button 
+                        type="button"
+                        onClick={() => setImageUrl(`https://picsum.photos/seed/${Math.random()}/400/400`)}
+                        className="px-3 py-1.5 bg-zinc-900 text-white rounded-lg text-xs font-bold hover:bg-zinc-800 transition-all"
+                      >
+                        Mock Upload
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Basic Info */}
             <div className="space-y-6 md:col-span-2">
               <div className="space-y-2">

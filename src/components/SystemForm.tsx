@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
 import { X, Save, Plus, Trash2, Beaker, Info, Calculator, Layers } from 'lucide-react';
-import { Layer } from '../types';
+import { SystemFormula, Layer } from '../types';
 import { cn } from '../lib/utils';
 
 interface SystemFormProps {
   onClose: () => void;
   onSave: (data: any) => void;
+  formula?: SystemFormula | null;
 }
 
-export const SystemForm = ({ onClose, onSave }: SystemFormProps) => {
-  const [layers, setLayers] = useState<Partial<Layer>[]>([
-    { id: '1', name: 'Base Coat', productType: 'Polyaspartic', coverage: 375, unitSize: 2 },
-    { id: '2', name: 'Top Coat', productType: 'Polyaspartic', coverage: 375, unitSize: 2 }
-  ]);
+export const SystemForm = ({ onClose, onSave, formula }: SystemFormProps) => {
+  const [name, setName] = useState(formula?.name || '');
+  const [description, setDescription] = useState(formula?.description || '');
+  const [layers, setLayers] = useState<Partial<Layer>[]>(
+    formula?.layers || [
+      { id: '1', name: 'Base Coat', productType: 'Polyaspartic', coverage: 375, unitSize: 2 },
+      { id: '2', name: 'Top Coat', productType: 'Polyaspartic', coverage: 375, unitSize: 2 }
+    ]
+  );
 
   const addLayer = () => {
     setLayers([...layers, { id: Date.now().toString(), name: '', productType: 'Epoxy', coverage: 0, unitSize: 1 }]);
@@ -32,7 +37,7 @@ export const SystemForm = ({ onClose, onSave }: SystemFormProps) => {
         {/* Header */}
         <div className="px-8 py-6 border-b border-zinc-100 flex justify-between items-center bg-zinc-50/50">
           <div>
-            <h2 className="text-xl font-bold tracking-tight">Create Smart System</h2>
+            <h2 className="text-xl font-bold tracking-tight">{formula ? 'Edit Smart System' : 'Create Smart System'}</h2>
             <p className="text-sm text-zinc-500">Define multi-layer formulas for automated quoting.</p>
           </div>
           <button 
@@ -54,7 +59,8 @@ export const SystemForm = ({ onClose, onSave }: SystemFormProps) => {
                   type="text" 
                   placeholder="e.g., One-Day Polyaspartic System"
                   className="w-full px-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-zinc-900 outline-none transition-all"
-                  defaultValue="One-Day Polyaspartic System"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </div>
               <div className="space-y-2">
@@ -63,6 +69,8 @@ export const SystemForm = ({ onClose, onSave }: SystemFormProps) => {
                   type="text" 
                   placeholder="Briefly describe this system..."
                   className="w-full px-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-zinc-900 outline-none transition-all"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
             </div>

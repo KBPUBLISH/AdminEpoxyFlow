@@ -34,6 +34,7 @@ export interface Product {
   pricePerUnit: number;
   description: string;
   adminId: string;
+  imageUrl?: string;
 }
 
 export interface ProjectQuote {

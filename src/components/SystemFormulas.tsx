@@ -33,13 +33,21 @@ const mockFormulas: SystemFormula[] = [
 export const SystemFormulas = () => {
   const [selectedFormula, setSelectedFormula] = useState<SystemFormula | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   return (
     <div className="space-y-8">
-      {isCreating && (
+      {(isCreating || isEditing) && (
         <SystemForm 
-          onClose={() => setIsCreating(false)} 
-          onSave={() => setIsCreating(false)} 
+          formula={isEditing ? selectedFormula : null}
+          onClose={() => {
+            setIsCreating(false);
+            setIsEditing(false);
+          }} 
+          onSave={() => {
+            setIsCreating(false);
+            setIsEditing(false);
+          }} 
         />
       )}
 
@@ -98,7 +106,10 @@ export const SystemFormulas = () => {
                   <h3 className="font-bold text-xl">{selectedFormula.name}</h3>
                   <p className="text-sm text-zinc-500">System Configuration & Layers</p>
                 </div>
-                <button className="p-2 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition-colors">
+                <button 
+                  onClick={() => setIsEditing(true)}
+                  className="p-2 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition-colors"
+                >
                   <Settings2 size={20} />
                 </button>
               </div>

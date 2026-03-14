@@ -11,7 +11,8 @@ import {
   ChevronRight, 
   ArrowLeft,
   FileText,
-  Layers
+  Layers,
+  Image as ImageIcon
 } from 'lucide-react';
 import { Product, Category } from '../types';
 import { cn } from '../lib/utils';
@@ -26,13 +27,13 @@ const mockCategories: Category[] = [
 ];
 
 const mockProducts: Product[] = [
-  { id: '1', categoryId: 'cat1', name: 'Base Epoxy Resin (Clear)', unit: 'gallon', pricePerUnit: 45, description: 'High-quality base resin for metallic systems', adminId: 'global' },
-  { id: '2', categoryId: 'cat1', name: 'Base Epoxy Resin (Grey)', unit: 'gallon', pricePerUnit: 48, description: 'Pigmented base resin for solid color systems', adminId: 'global' },
-  { id: '3', categoryId: 'cat2', name: 'Polyaspartic 85% Solids', unit: 'gallon', pricePerUnit: 85, description: 'UV resistant fast-cure top coat', adminId: 'global' },
-  { id: '4', categoryId: 'cat4', name: 'Silver Metallic Pigment', unit: 'container', pricePerUnit: 15, description: 'Premium metallic pigment for 3-gallon kits', adminId: 'global' },
-  { id: '5', categoryId: 'cat4', name: 'Ocean Blue Pigment', unit: 'container', pricePerUnit: 18, description: 'Deep blue metallic pigment', adminId: 'global' },
-  { id: '6', categoryId: 'cat3', name: 'Grey Flakes (40lb)', unit: 'box', pricePerUnit: 120, description: 'Standard decorative flakes', adminId: 'global' },
-  { id: '7', categoryId: 'cat3', name: 'Blue Marble Flakes (40lb)', unit: 'box', pricePerUnit: 135, description: 'Premium decorative flakes', adminId: 'global' },
+  { id: '1', categoryId: 'cat1', name: 'Base Epoxy Resin (Clear)', unit: 'gallon', pricePerUnit: 45, description: 'High-quality base resin for metallic systems', adminId: 'global', imageUrl: 'https://picsum.photos/seed/epoxy1/400/400' },
+  { id: '2', categoryId: 'cat1', name: 'Base Epoxy Resin (Grey)', unit: 'gallon', pricePerUnit: 48, description: 'Pigmented base resin for solid color systems', adminId: 'global', imageUrl: 'https://picsum.photos/seed/epoxy2/400/400' },
+  { id: '3', categoryId: 'cat2', name: 'Polyaspartic 85% Solids', unit: 'gallon', pricePerUnit: 85, description: 'UV resistant fast-cure top coat', adminId: 'global', imageUrl: 'https://picsum.photos/seed/poly1/400/400' },
+  { id: '4', categoryId: 'cat4', name: 'Silver Metallic Pigment', unit: 'container', pricePerUnit: 15, description: 'Premium metallic pigment for 3-gallon kits', adminId: 'global', imageUrl: 'https://picsum.photos/seed/pigment1/400/400' },
+  { id: '5', categoryId: 'cat4', name: 'Ocean Blue Pigment', unit: 'container', pricePerUnit: 18, description: 'Deep blue metallic pigment', adminId: 'global', imageUrl: 'https://picsum.photos/seed/pigment2/400/400' },
+  { id: '6', categoryId: 'cat3', name: 'Grey Flakes (40lb)', unit: 'box', pricePerUnit: 120, description: 'Standard decorative flakes', adminId: 'global', imageUrl: 'https://picsum.photos/seed/flakes1/400/400' },
+  { id: '7', categoryId: 'cat3', name: 'Blue Marble Flakes (40lb)', unit: 'box', pricePerUnit: 135, description: 'Premium decorative flakes', adminId: 'global', imageUrl: 'https://picsum.photos/seed/flakes2/400/400' },
 ];
 
 export const Inventory = () => {
@@ -154,18 +155,36 @@ export const Inventory = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProducts.map((product) => (
               <div key={product.id} className="bg-white rounded-xl border border-zinc-200 shadow-sm overflow-hidden group">
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <span className="px-2 py-1 rounded bg-zinc-100 text-zinc-600 text-[10px] font-bold uppercase tracking-wider">
+                {/* Product Image */}
+                <div className="aspect-video bg-zinc-100 relative overflow-hidden">
+                  {product.imageUrl ? (
+                    <img 
+                      src={product.imageUrl} 
+                      alt={product.name} 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-zinc-300">
+                      <ImageIcon size={32} />
+                    </div>
+                  )}
+                  <div className="absolute top-3 left-3">
+                    <span className="px-2 py-1 rounded bg-white/90 backdrop-blur-sm text-zinc-900 text-[10px] font-bold uppercase tracking-wider shadow-sm">
                       {selectedCategory.type}
                     </span>
+                  </div>
+                </div>
+
+                <div className="p-6">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-bold text-lg line-clamp-1">{product.name}</h3>
                     <button className="text-zinc-400 hover:text-zinc-900 transition-colors">
                       <MoreVertical size={18} />
                     </button>
                   </div>
                   
-                  <h3 className="font-bold text-lg mb-1">{product.name}</h3>
-                  <p className="text-zinc-500 text-sm mb-4 line-clamp-2">{product.description}</p>
+                  <p className="text-zinc-500 text-sm mb-4 line-clamp-2 min-h-[40px]">{product.description}</p>
                   
                   <div className="pt-4 border-t border-zinc-100">
                     <div className="flex justify-between items-center">
