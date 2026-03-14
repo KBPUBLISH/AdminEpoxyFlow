@@ -1,0 +1,8 @@
+{
+  "name": "EpoxyFlow Admin Panel",
+  "description": "A comprehensive admin dashboard for managing epoxy flooring inventory, supplier accounts, and project leads.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ]
+}
